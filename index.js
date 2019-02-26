@@ -20,7 +20,6 @@ app.use(express.urlencoded({ extended: false }));
 // This is being run as middleware, so it has access to the incoming request
 function fromRequest(req) {
   console.log("fromRequest in index.js is running!!!!");
-  console.log("REQ:", req.headers.authorization);
   if (
     req.headers.authorization &&
     req.headers.authorization.split(" ")[0] === "Bearer"
@@ -47,6 +46,7 @@ app.use(
   }),
   require("./controllers/auth")
 );
+app.use("/places", require("./controllers/places"));
 
 // This is the catch-all route. Ideally you don't get here unless you made a mistake on your front-end
 app.get("*", function(req, res, next) {

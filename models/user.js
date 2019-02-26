@@ -19,7 +19,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       },
-      image: DataTypes.STRING
+      image: {
+        type: DataTypes.STRING,
+        default: "https://i.imgur.com/mCHMpLT.png?3"
+      }
     },
     {
       hooks: {

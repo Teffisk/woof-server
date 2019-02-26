@@ -76,7 +76,6 @@ router.get("/current/user", function(req, res) {
   db.user
     .findById(req.user.id)
     .then(function(user) {
-      console.log("User from /auth/current/user:", user);
       res.send({ user: user });
     })
     .catch(function(err) {

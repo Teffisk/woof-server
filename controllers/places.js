@@ -11,26 +11,24 @@ const yelp = require("yelp-fusion");
 const apiKey =
   "VwDPuq_pjm7WYisNaTFtmAFOyH5hHLW7vwQJPrQv6IhD8Hpqk4uiI_OchZHB3TGlVxEfMVYZkZlSWdiV2maxH_XzaNGccgRxsGmj0yl0fT892pYCXw8ALsLUKGd0XHYx";
 
-const searchRequest = {
-  term: "Four Barrel Coffee",
-  location: "san francisco, ca"
-};
-
 const client = yelp.client(apiKey);
 
-client
-  .search(searchRequest)
-  .then(response => {
-    const firstResult = response.jsonBody.businesses[0];
-    const prettyJson = JSON.stringify(firstResult, null, 4);
-    console.log(prettyJson);
-  })
-  .catch(e => {
-    console.log(e);
-  });
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-router.get("/search", (req, res) => {
-  res.send("GET /places/search");
+router.get("/search/:location", (req, res) => {
+  console.log("Hitting places post route!!!!!!!");
+  client
+    .search({
+      term: req.params.location,
+      location: "Seattle, WA"
+    })
+    .then(response => {
+      const firstResult = response.jsonBody.businesses[0];
+      const prettyJson = JSON.stringify(firstResult, null, 4);
+      console.log(prettyJson);
+      res.status(200).send(prettyJson);
+    })
+    .catch(e => {
+      console.log(e);
+    });
 });
 
 router.post("/search/", (req, res) => {
