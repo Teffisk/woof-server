@@ -1,35 +1,42 @@
-var mongoose = require('mongoose');
-
-var userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 99
-  },
-  email: { // TODO: Need to add email validation
-    type: String,
-    required: true,
-    unique: true,
-    minlength: 5,
-    maxlength: 99
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6,
-    maxlength: 99
-  }
-});
-
-// TODO: Override 'toJSON' to prevent the password from being returned with the user
-
-
-// TODO: A helper function to authenticate with bcrypt
-
-
-// TODO: Find out Mongoose's version of a beforeCreate hook
-
-
-// Exporting the User model
-module.exports = mongoose.model('User', userSchema);
+"use strict";
+var bcrypt = require("bcryptjs");
+module.exports = (sequelize, DataTypes) => {
+  const user = sequelize.define(
+    "user",
+    {
+      email: DataTypes.STRING,
+      username: DataTypes.STRING,
+      password: {
+        type: DataTypes.STRING,
+        validate: {
+          len: {
+            args: [8, 20],
+            msg: "Password must be between 8 and 20 characters in length."
+          }
+        }
+      },
+      admin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      },
+      image: DataTypes.STRING
+    },
+    {
+      hooks: {
+        beforeCreate: function(pendingUser) {
+          if (pendingUser && pendingUser.password) {
+            var hash = bcrypt.hashSync(pendingUser.password, 12);
+            pendingUser.password = hash;
+          }
+        }
+      }
+    }
+  );
+  user.associate = function(models) {
+    // associations can be defined here
+  };
+  user.prototype.validPassword = function(typedPassword) {
+    return bcrypt.compareSync(typedPassword, this.password);
+  };
+  return user;
+};
