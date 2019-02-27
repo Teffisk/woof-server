@@ -7,15 +7,22 @@ router.get("/search", (req, res) => {
   res.send("GET /dogs/search");
 });
 
-// POST /auth/signup route - create a user in the DB and then log them in
-router.post("/new/:user", (req, res) => {
-  db.user.findById(req.body.userId)
-  .then(function(user) {
-    user.createDog({
-      req.body
-    }).then(function(dog) {
-      console.log(dog.get());
-    });
+// POST create a new dog with a userId association
+router.post("/new", (req, res) => {
+  db.user.findById(req.body.userId).then(function(user) {
+    console.log("req.body:", req);
+    user
+      .createDog({
+        name: req.body.name,
+        userId: req.body.userId,
+        birthday: req.body.birthday,
+        breed: req.body.breed,
+        gender: req.body.gender,
+        bio: req.body.bio
+      })
+      .then(function(dog) {
+        console.log(dog.get());
+      });
   });
 });
 
