@@ -14,7 +14,7 @@ const apiKey =
 const client = yelp.client(apiKey);
 
 router.get("/search/:location", (req, res) => {
-  console.log("Hitting places post route!!!!!!!");
+  console.log("Hitting places post route!");
   client
     .search({
       term: req.params.location,

@@ -47,6 +47,9 @@ app.use(
   require("./controllers/auth")
 );
 app.use("/places", require("./controllers/places"));
+app.use("/dogs", require("./controllers/dogs"));
+app.use("/people", require("./controllers/people"));
+app.use("/reviews", require("./controllers/reviews"));
 
 // This is the catch-all route. Ideally you don't get here unless you made a mistake on your front-end
 app.get("*", function(req, res, next) {
