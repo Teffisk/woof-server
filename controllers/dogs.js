@@ -2,9 +2,19 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models");
 
-// POST /auth/login route - returns a JWT
-router.get("/search", (req, res) => {
-  res.send("GET /dogs/search");
+// GET all the dogs with the user's id
+router.get("/:userId", (req, res) => {
+  console.log("Hitting server route GET /dogs/search");
+  db.dog
+    .findAll({ where: { userId: req.params.userId } })
+    .then(dogs => {
+      console.log(dogs);
+      res.send(dogs);
+    })
+    .catch(err => {
+      console.log("Err!:", err);
+      res.send(err);
+    });
 });
 
 // POST create a new dog with a userId association
@@ -22,6 +32,7 @@ router.post("/new", (req, res) => {
       })
       .then(function(dog) {
         console.log(dog.get());
+        res.send(dog);
       });
   });
 });

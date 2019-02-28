@@ -1,9 +1,16 @@
 const express = require("express");
 const router = express.Router();
+const db = require("./models");
 
 // POST /auth/login route - returns a JWT
-router.get("/search", (req, res) => {
-  res.send("GET /users/search");
+router.get("/:userid", (req, res) => {
+  db.user.findById(req.params.userid),
+    then(user => {
+      res.send(user);
+    }).catch(err => {
+      console.log("Server Error:", err);
+      res.send("Error!");
+    });
 });
 
 // POST /auth/signup route - create a user in the DB and then log them in
