@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const review = sequelize.define(
     "review",
     {
-      locationId: DataTypes.INTEGER,
+      locationId: DataTypes.STRING,
       userId: DataTypes.INTEGER,
       title: DataTypes.STRING,
       images: DataTypes.ARRAY(DataTypes.STRING),
@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   review.associate = function(models) {
     // associations can be defined here
+    models.review.belongsTo(models.user);
   };
   return review;
 };

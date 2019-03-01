@@ -5,9 +5,13 @@ const db = require("../models");
 // GET all the reviews for a location
 router.get("/locations/:locationId", (req, res) => {
   db.review
-    .findAll({ where: { locationId: req.params.locationId } })
+    .findAll({
+      where: { locationId: req.params.locationId },
+      include: [db.user]
+    })
     .then(reviews => {
-      res.send(reviews);
+      console.log("Reviews.user", reviews[0].user);
+      res.send({ reviews });
     })
     .catch(err => {
       console.log("Error in the GET REVIEWS route:", err);
@@ -23,6 +27,7 @@ router.post("/new", (req, res) => {
     .create(req.body)
     .then(review => {
       console.log("Review was successfully created!");
+      res.send(review);
     })
     .catch(err => {
       console.log("Error on creating this new review:", err);
