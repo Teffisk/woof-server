@@ -1,6 +1,9 @@
 {
   "name": "neighborhoord-woof-server",
   "version": "0.0.0",
+  "engines": {
+    "node": "11.10.0"
+  },
   "private": true,
   "main": "index.js",
   "dependencies": {
